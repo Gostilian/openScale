@@ -16,17 +16,17 @@
 
 package com.health.openscale.core.database;
 
-import com.health.openscale.core.datatypes.ScaleMeasurement;
-import com.health.openscale.core.datatypes.ScaleUser;
-import com.health.openscale.core.utils.Converters;
-
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {ScaleMeasurement.class, ScaleUser.class}, version = 4)
+import com.health.openscale.core.datatypes.ScaleMeasurement;
+import com.health.openscale.core.datatypes.ScaleUser;
+import com.health.openscale.core.utils.Converters;
+
+@Database(entities = {ScaleMeasurement.class, ScaleUser.class}, version = 5)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ScaleMeasurementDAO measurementDAO();
@@ -168,6 +168,35 @@ public abstract class AppDatabase extends RoomDatabase {
 
                 // Delete old table
                 database.execSQL("DROP TABLE scaleMeasurementsOld");
+
+                database.setTransactionSuccessful();
+            }
+            finally {
+                database.endTransaction();
+            }
+        }
+    };
+
+    public static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.beginTransaction();
+            try {
+                // Rename old table
+                database.execSQL("ALTER TABLE scaleUsers RENAME TO scaleUsersOld");
+
+                database.execSQL("CREATE TABLE scaleUsers "
+                        + "(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                        + "username TEXT NOT NULL, birthday INTEGER NOT NULL, bodyHeight REAL NOT NULL, "
+                        + "scaleUnit INTEGER NOT NULL, gender INTEGER NOT NULL, subtractionWeight REAL NOT NULL, initialWeight REAL NOT NULL, "
+                        + "goalWeight REAL NOT NULL, goalDate INTEGER, measureUnit INTEGER NOT NULL, activityLevel INTEGER NOT NULL)");
+
+                database.execSQL("INSERT INTO scaleUsers"
+                        + " SELECT id, username, birthday, bodyHeight, scaleUnit, gender, 0 AS subtractionWeight, initialWeight, goalWeight,"
+                        + " goalDate, measureUnit, activityLevel FROM scaleUsersOld");
+
+                // Delete old table
+                database.execSQL("DROP TABLE scaleUsersOld");
 
                 database.setTransactionSuccessful();
             }

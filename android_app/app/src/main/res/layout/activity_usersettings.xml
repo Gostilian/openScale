@@ -208,6 +208,25 @@
             </TableRow>
 
             <TableRow
+                android:id="@+id/tableRowSubtractionWeight"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/lblSubtractionWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_subtraction_weight" />
+
+                <EditText
+                    android:id="@+id/txtSubtractionWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="numberDecimal|numberSigned" />
+            </TableRow>
+
+            <TableRow
                 android:id="@+id/tableRowInitialWeight"
                 android:layout_weight="1"
                 android:gravity="center_vertical">

@@ -23,8 +23,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +32,9 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.health.openscale.R;
 import com.health.openscale.core.OpenScale;
@@ -58,6 +59,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
     private EditText txtUserName;
     private EditText txtBodyHeight;
     private EditText txtBirthday;
+    private EditText txtSubtractionWeight;
     private EditText txtInitialWeight;
     private EditText txtGoalWeight;
     private EditText txtGoalDate;
@@ -89,6 +91,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
         radioGender = findViewById(R.id.groupGender);
         radioMeasurementUnit = findViewById(R.id.groupMeasureUnit);
         spinnerActivityLevel = findViewById(R.id.spinnerActivityLevel);
+        txtSubtractionWeight = findViewById(R.id.txtSubtractionWeight);
         txtInitialWeight = findViewById(R.id.txtInitialWeight);
         txtGoalWeight = findViewById(R.id.txtGoalWeight);
 
@@ -96,6 +99,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
         txtGoalDate = findViewById(R.id.txtGoalDate);
 
         txtBodyHeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + Converters.MeasureUnit.CM.toString());
+        txtSubtractionWeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + Converters.WeightUnit.KG.toString());
         txtInitialWeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + Converters.WeightUnit.KG.toString());
         txtGoalWeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + Converters.WeightUnit.KG.toString());
 
@@ -153,6 +157,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
                         break;
                 }
 
+                txtSubtractionWeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + scale_unit.toString());
                 txtInitialWeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + scale_unit.toString());
                 txtGoalWeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + scale_unit.toString());
             }
@@ -258,6 +263,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
         txtBodyHeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + scaleUser.getMeasureUnit().toString());
         txtBirthday.setText(dateFormat.format(birthday));
         txtGoalDate.setText(dateFormat.format(goal_date));
+        txtSubtractionWeight.setText(Float.toString(Math.round(Converters.fromKilogram(scaleUser.getSubtractionWeight(), scaleUser.getScaleUnit())*100.0f)/100.0f));
         txtInitialWeight.setText(Float.toString(Math.round(Converters.fromKilogram(scaleUser.getInitialWeight(), scaleUser.getScaleUnit())*100.0f)/100.0f));
         txtGoalWeight.setText(Float.toString(Math.round(Converters.fromKilogram(scaleUser.getGoalWeight(), scaleUser.getScaleUnit())*100.0f)/100.0f));
         txtInitialWeight.setHint(getResources().getString(R.string.info_enter_value_in) + " " + scaleUser.getScaleUnit().toString());
@@ -309,6 +315,11 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
 
         if (txtBodyHeight.getText().toString().length() == 0) {
             txtBodyHeight.setError(getResources().getString(R.string.error_height_required));
+            validate = false;
+        }
+
+        if (txtSubtractionWeight.getText().toString().length() == 0) {
+            txtSubtractionWeight.setError(getResources().getString(R.string.error_subtraction_weight_required));
             validate = false;
         }
 
@@ -398,6 +409,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
 
                 String name = txtUserName.getText().toString();
                 float body_height = Float.valueOf(txtBodyHeight.getText().toString());
+                float subtraction_weight = Float.valueOf(txtSubtractionWeight.getText().toString());
                 float initial_weight = Float.valueOf(txtInitialWeight.getText().toString());
                 float goal_weight = Float.valueOf(txtGoalWeight.getText().toString());
 
@@ -447,6 +459,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
                 scaleUser.setActivityLevel(Converters.fromActivityLevelInt(
                         spinnerActivityLevel.getSelectedItemPosition()));
                 scaleUser.setGender(gender);
+                scaleUser.setSubtractionWeight(Converters.toKilogram(subtraction_weight, scale_unit));
                 scaleUser.setInitialWeight(Converters.toKilogram(initial_weight, scale_unit));
                 scaleUser.setGoalWeight(Converters.toKilogram(goal_weight, scale_unit));
                 scaleUser.setGoalDate(goal_date);

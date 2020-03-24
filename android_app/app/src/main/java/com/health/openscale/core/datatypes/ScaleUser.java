@@ -16,16 +16,16 @@
 
 package com.health.openscale.core.datatypes;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.health.openscale.core.utils.Converters;
 import com.health.openscale.core.utils.DateTimeHelpers;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 @Entity(tableName = "scaleUsers")
 public class ScaleUser {
@@ -47,6 +47,8 @@ public class ScaleUser {
     @ColumnInfo(name = "gender")
     @NonNull
     private Converters.Gender gender;
+    @ColumnInfo(name = "subtractionWeight")
+    private float subtractionWeight;
     @ColumnInfo(name = "initialWeight")
     private float initialWeight;
     @ColumnInfo(name = "goalWeight")
@@ -66,6 +68,7 @@ public class ScaleUser {
         bodyHeight = -1;
         scaleUnit = Converters.WeightUnit.KG;
         gender = Converters.Gender.MALE;
+        subtractionWeight = 0;
         initialWeight = -1;
         goalWeight = -1;
         goalDate = new Date();
@@ -153,6 +156,14 @@ public class ScaleUser {
         return getAge(null);
     }
 
+    public void setSubtractionWeight(float subtractionWeight) {
+        this.subtractionWeight = subtractionWeight;
+    }
+
+    public float getSubtractionWeight() {
+        return subtractionWeight;
+    }
+
     public void setInitialWeight(float weight) {
         this.initialWeight = weight;
     }
@@ -190,10 +201,10 @@ public class ScaleUser {
     {
         return String.format(
                 "id(%d) name(%s) birthday(%s) age(%d) body height(%.2f) scale unit(%s) " +
-                "gender(%s) initial weight(%.2f) goal weight(%.2f) goal date(%s) " +
+                "gender(%s) subtraction weight (%.2f) initial weight(%.2f) goal weight(%.2f) goal date(%s) " +
                 "measure unt(%s) activity level(%d)",
                 id, userName, birthday.toString(), getAge(), bodyHeight, scaleUnit.toString(),
-                gender.toString().toLowerCase(), initialWeight, goalWeight, goalDate.toString(),
+                gender.toString().toLowerCase(), subtractionWeight, initialWeight, goalWeight, goalDate.toString(),
                 measureUnit.toString(), activityLevel.toInt());
     }
 }

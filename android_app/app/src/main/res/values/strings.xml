@@ -72,6 +72,7 @@
     <string name="error_importing">Could not import</string>
     <string name="error_user_name_required">Name required</string>
     <string name="error_height_required">Height required</string>
+    <string name="error_subtraction_weight_required">Subtraction weight required</string>
     <string name="error_initial_weight_required">Initial weight required</string>
     <string name="error_goal_weight_required">Goal weight required</string>
     <string name="info_data_deleted">Entry deleted</string>
@@ -140,6 +141,7 @@
     <string name="label_export_dir">Export dir</string>
     <string name="label_not_found">not found</string>
     <string name="label_ignoreOutOfRange">Ignore out of range data</string>
+    <string name="label_subtraction_weight">Subtraction weight</string>
     <string name="label_initial_weight">Initial weight</string>
     <string name="label_regression_line">Regression line</string>
     <string name="label_regression_line_degree">Regression polynomial degree</string>
