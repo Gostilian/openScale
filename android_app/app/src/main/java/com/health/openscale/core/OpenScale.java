@@ -283,6 +283,10 @@ public class OpenScale {
             }
         }
 
+        if (getSelectedScaleUser().getSubtractionWeight() > 0.0f) {
+            scaleMeasurement.setWeight(scaleMeasurement.getWeight() - getSelectedScaleUser().getSubtractionWeight());
+        }
+
         MeasurementViewSettings settings = new MeasurementViewSettings(prefs, WaterMeasurementView.KEY);
         if (settings.isEnabled() && settings.isEstimationEnabled()) {
             EstimatedWaterMetric waterMetric = EstimatedWaterMetric.getEstimatedMetric(

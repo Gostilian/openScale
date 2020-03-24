@@ -246,7 +246,7 @@ public class ScaleMeasurement implements Cloneable {
     }
 
     public float getWeight() {
-        return weight - getScaleUser().getSubtractionWeight();
+        return weight;
     }
 
     public void setWeight(float weight) {
