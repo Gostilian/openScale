@@ -43,7 +43,7 @@ public class TDEEMeasurementView extends FloatMeasurementView {
 
     @Override
     protected float getMeasurementValue(ScaleMeasurement measurement) {
-        return measurement.getTDEE();
+        return measurement.getTDEE(getScaleUser());
     }
 
     @Override

@@ -27,9 +27,9 @@ public class BFDeurenbergII extends EstimatedFatMetric {
     @Override
     public float getFat(ScaleUser user, ScaleMeasurement data) {
         if (user.getGender().isMale()) {
-            return (data.getBMI() * 1.2f) + (user.getAge(data.getDateTime()) * 0.23f) - 16.2f;
+            return (data.getBMI(user.getBodyHeight()) * 1.2f) + (user.getAge(data.getDateTime()) * 0.23f) - 16.2f;
         }
 
-        return (data.getBMI() * 1.2f) + (user.getAge(data.getDateTime()) * 0.23f) - 5.4f;
+        return (data.getBMI(user.getBodyHeight()) * 1.2f) + (user.getAge(data.getDateTime()) * 0.23f) - 5.4f;
     }
 }

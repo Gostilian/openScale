@@ -43,7 +43,7 @@ public class BMRMeasurementView extends FloatMeasurementView {
 
     @Override
     protected float getMeasurementValue(ScaleMeasurement measurement) {
-        return measurement.getBMR();
+        return measurement.getBMR(getScaleUser());
     }
 
     @Override

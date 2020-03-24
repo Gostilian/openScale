@@ -43,7 +43,7 @@ public class BMIMeasurementView extends FloatMeasurementView {
 
     @Override
     protected float getMeasurementValue(ScaleMeasurement measurement) {
-        return measurement.getBMI();
+        return measurement.getBMI(getScaleUser().getBodyHeight());
     }
 
     @Override

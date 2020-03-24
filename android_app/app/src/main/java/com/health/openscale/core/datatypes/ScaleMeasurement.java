@@ -23,7 +23,6 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import com.health.openscale.core.OpenScale;
 import com.health.openscale.core.utils.CsvHelper;
 import com.j256.simplecsv.common.CsvColumn;
 
@@ -221,14 +220,6 @@ public class ScaleMeasurement implements Cloneable {
         this.userId = user_id;
     }
 
-    public ScaleUser getScaleUser() {
-        if (getUserId() == -1) {
-            return OpenScale.getInstance().getSelectedScaleUser();
-        }
-
-        return OpenScale.getInstance().getScaleUser(getUserId());
-    }
-
     public boolean getEnabled() {
         return enabled;
     }
@@ -386,27 +377,27 @@ public class ScaleMeasurement implements Cloneable {
         }
     }
 
-    public float getBMI() {
-        return getWeight() / ((getScaleUser().getBodyHeight() / 100.0f)*(getScaleUser().getBodyHeight() / 100.0f));
+    public float getBMI(float body_height) {
+        return weight / ((body_height / 100.0f)*(body_height / 100.0f));
     }
 
-    public float getBMR() {
+    public float getBMR(ScaleUser scaleUser) {
         float bmr;
 
         // BMR Harris-Benedict equation
-        if (getScaleUser().getGender().isMale()) {
-            bmr = 66.4730f + (13.7516f * weight) + (5.0033f * getScaleUser().getBodyHeight()) - (6.7550f * getScaleUser().getAge(dateTime));
+        if (scaleUser.getGender().isMale()) {
+            bmr = 66.4730f + (13.7516f * weight) + (5.0033f * scaleUser.getBodyHeight()) - (6.7550f * scaleUser.getAge(dateTime));
         } else {
-            bmr = 655.0955f + (9.5634f * weight) + (1.8496f * getScaleUser().getBodyHeight()) - (4.6756f * getScaleUser().getAge(dateTime));
+            bmr = 655.0955f + (9.5634f * weight) + (1.8496f * scaleUser.getBodyHeight()) - (4.6756f * scaleUser.getAge(dateTime));
         }
 
         return bmr; // kCal / day
     }
 
-    public float getTDEE() {
+    public float getTDEE(ScaleUser scaleUser) {
         float factor = 1.0f;
 
-        switch (getScaleUser().getActivityLevel()) {
+        switch (scaleUser.getActivityLevel()) {
             case SEDENTARY:
                 factor = 1.2f;
                 break;
@@ -424,11 +415,11 @@ public class ScaleMeasurement implements Cloneable {
                 break;
         }
 
-        return factor * getBMR();
+        return factor * getBMR(scaleUser);
     }
 
-    public float getWHtR() {
-        return waist / getScaleUser().getBodyHeight();
+    public float getWHtR(float body_height) {
+        return waist / body_height;
     }
 
     public float getWHR() {
@@ -439,14 +430,14 @@ public class ScaleMeasurement implements Cloneable {
         return waist / hip;
     }
 
-    public float getFatCaliper() {
+    public float getFatCaliper(ScaleUser scaleUser) {
         float fat_caliper;
 
         float k0, k1, k2, ka;
 
         float s = (caliper1 + caliper2 + caliper3) * 10.0f; // cm to mm
 
-        if (getScaleUser().getGender().isMale()) {
+        if (scaleUser.getGender().isMale()) {
             k0 = 1.10938f;
             k1 = 0.0008267f;
             k2 = 0.0000016f;
@@ -459,7 +450,7 @@ public class ScaleMeasurement implements Cloneable {
         }
 
         // calipometrie formula by Jackson, Pollock: Generalized equations for predicting body density of women. In: British Journal of Nutrition. Nr.40, Oktober 1978, S.497–504
-        fat_caliper = ((4.95f / (k0 - (k1*s) + (k2 * s*s) - (ka*getScaleUser().getAge()))) - 4.5f) * 100.0f;
+        fat_caliper = ((4.95f / (k0 - (k1*s) + (k2 * s*s) - (ka*scaleUser.getAge()))) - 4.5f) * 100.0f;
 
         return fat_caliper;
     }

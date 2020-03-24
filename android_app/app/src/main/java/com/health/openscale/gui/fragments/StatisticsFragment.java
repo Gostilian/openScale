@@ -199,7 +199,7 @@ public class StatisticsFragment extends Fragment implements FragmentUpdateListen
         boolean isBmiEnabled = new MeasurementViewSettings(
                 PreferenceManager.getDefaultSharedPreferences(getActivity()), BMIMeasurementView.KEY)
                 .isEnabled();
-        final float goalBmi = goalScaleMeasurement.getBMI();
+        final float goalBmi = goalScaleMeasurement.getBMI(currentScaleUser.getBodyHeight());
 
         txtLabelGoalWeight.setText(
                 isBmiEnabled
@@ -216,7 +216,7 @@ public class StatisticsFragment extends Fragment implements FragmentUpdateListen
                                 "%s<br><font color='grey'><small>%s: %.1f</small></font>",
                                 getResources().getString(R.string.label_weight_difference),
                                 getResources().getString(R.string.label_bmi),
-                                lastScaleMeasurement.getBMI() - goalBmi))
+                                lastScaleMeasurement.getBMI(currentScaleUser.getBodyHeight()) - goalBmi))
                         : getResources().getString(R.string.label_weight_difference));
 
         txtLabelDayLeft.setText(
