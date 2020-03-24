@@ -43,7 +43,7 @@ public class WHtRMeasurementView extends FloatMeasurementView {
 
     @Override
     protected float getMeasurementValue(ScaleMeasurement measurement) {
-        return measurement.getWHtR(getScaleUser().getBodyHeight());
+        return measurement.getWHtR();
     }
 
     @Override

@@ -28,9 +28,9 @@ public class BFDeurenberg extends EstimatedFatMetric {
     public float getFat(ScaleUser user, ScaleMeasurement data) {
         final int gender = user.getGender().isMale() ? 1 : 0;
         if (user.getAge(data.getDateTime()) >= 16) {
-            return (1.2f * data.getBMI(user.getBodyHeight())) + (0.23f*user.getAge(data.getDateTime())) - (10.8f * gender) - 5.4f;
+            return (1.2f * data.getBMI()) + (0.23f*user.getAge(data.getDateTime())) - (10.8f * gender) - 5.4f;
         }
 
-        return (1.294f * data.getBMI(user.getBodyHeight())) + (0.20f*user.getAge(data.getDateTime())) - (11.4f * gender) - 8.0f;
+        return (1.294f * data.getBMI()) + (0.20f*user.getAge(data.getDateTime())) - (11.4f * gender) - 8.0f;
     }
 }

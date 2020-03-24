@@ -28,10 +28,10 @@ public class BFGallagherAsian extends EstimatedFatMetric {
     public float getFat(ScaleUser user, ScaleMeasurement data) {
         if (user.getGender().isMale()) {
             // asian male
-            return 51.9f - 740.0f * (1.0f / data.getBMI(user.getBodyHeight())) + 0.029f * user.getAge(data.getDateTime());
+            return 51.9f - 740.0f * (1.0f / data.getBMI()) + 0.029f * user.getAge(data.getDateTime());
         }
 
         // asian female
-        return 64.8f - 752.0f * (1.0f / data.getBMI(user.getBodyHeight())) + 0.016f * user.getAge(data.getDateTime());
+        return 64.8f - 752.0f * (1.0f / data.getBMI()) + 0.016f * user.getAge(data.getDateTime());
     }
 }

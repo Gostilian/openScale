@@ -48,7 +48,7 @@ public class FatCaliperMeasurementView extends FloatMeasurementView {
 
     @Override
     protected float getMeasurementValue(ScaleMeasurement measurement) {
-        return measurement.getFatCaliper(getScaleUser());
+        return measurement.getFatCaliper();
     }
 
     @Override
